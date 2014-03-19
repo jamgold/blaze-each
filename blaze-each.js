@@ -32,6 +32,13 @@ if (Meteor.isClient) {
     return r;
   };
 
+  Template.hello.codeRendered = function() {
+    r = "Template.dataTemplate.rendered = function() {\n";
+    r+= " console.log('dataTemplate rendered with number of a.delete = <b>'+$(this.find('a.delete'))</b>.size());\n";
+    r+= "};\n";
+    return r;
+  };
+
   Template.hello.events({
     'click input.add': function (e,t) {
       if($('input.dataItem').val() != "")
@@ -58,7 +65,8 @@ if (Meteor.isClient) {
   };
 
   Template.dataTemplate.rendered = function() {
-    console.log('dataTemplate rendered with number of a.delete = '+$('a.delete').size());
+    // console.log('dataTemplate rendered with number of a.delete = '+$('a.delete').size());
+    console.log('dataTemplate rendered with number of a.delete = '+$(this.find('a.delete')).size());
   };
 
   Template.dataTemplate.events({

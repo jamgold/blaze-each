@@ -15,3 +15,7 @@ blockquote.code {
 	font-family: monospace;
 	white-space: pre;
 }
+
+.solved {
+	text-decoration: line-through;
+}
