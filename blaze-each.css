@@ -1,0 +1,17 @@
+/* CSS declarations go here */
+
+div {
+	width: 48%;
+}
+div.messages {
+	float: right;
+	min-height: 20em;
+	overflow: auto;
+	border: 3px solid #aaa;
+	border-radius:3px;
+}
+
+blockquote.code {
+	font-family: monospace;
+	white-space: pre;
+}

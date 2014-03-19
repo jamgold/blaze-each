@@ -1,0 +1,36 @@
+<head>
+  <title>blaze-each</title>
+</head>
+
+<body>
+  {{> hello}}
+</body>
+
+<template name="hello">
+	<div class="messages"><ul></ul></div>
+
+	<div>
+	<h1>Hello Blaze {{eachTag}}!</h1>
+
+	<p>There are three, nested templates on this page:
+	<blockquote class="code">{{code}}</blockquote>
+	but I don't understand what to expect in which order templates get rendered upon start of the application. Sometimes <code>dataEach</code> reports to be rendered <b>after</b> <code>dataTemplates</code>, for example. Why does <code>dataTemplate</code> first time rendered see all of the <code>a.delete</code> links on the first pass when I would expect it to see 1 on the first rendered callback, 2 on second, etc.
+	</p>
+	{{> dataEach}}
+
+	<input type="text" class="dataItem" tabindex="0" name="dataItem"/> <input type="button" class="add" value="Add" />  
+	</div>
+
+</template>
+
+<template name="dataEach">
+	<ul class="dataEach">
+		{{#each data}}
+		  {{> dataTemplate}}
+		{{/each}}
+	</ul>
+</template>
+
+<template name="dataTemplate">
+	<li class="dataTemplate">{{title}} <sup><a href="#" id="{{_id}}" class="delete" title="delete">x</a></sup></li>
+</template>
