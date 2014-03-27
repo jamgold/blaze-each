@@ -1,12 +1,16 @@
 DataItems = new Meteor.Collection('data');
 
 if (Meteor.isClient) {
+  console.orig_log = console.log;
   console.log = function(s) {
-    $('div.messages ul').append('<li>'+s+'</li>');
+    if(typeof s == "object")
+      console.orig_log(s);
+    else
+      $('div.messages ul').append('<li>'+s+'</li>');
   };
 
   Template.hello.eachTag = function() {
-    return "{{#each}}";
+    return "{{#each}} "+Meteor.release;
   };
 
   Template.hello.code = function () {
@@ -58,6 +62,7 @@ if (Meteor.isClient) {
 
   Template.dataEach.rendered = function() {
     console.log('dataEach rendered with number of a.delete = '+$('a.delete').size());
+    console.log(this);
   };
 
   Template.dataEach.data = function() {
@@ -67,6 +72,7 @@ if (Meteor.isClient) {
   Template.dataTemplate.rendered = function() {
     // console.log('dataTemplate rendered with number of a.delete = '+$('a.delete').size());
     console.log('dataTemplate rendered with number of a.delete = '+$(this.find('a.delete')).size());
+    console.log(this);
   };
 
   Template.dataTemplate.events({
