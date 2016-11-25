@@ -9,39 +9,39 @@ if (Meteor.isClient) {
       $('div.messages ul').append('<li>'+s+'</li>');
   };
 
-  Template.hello.eachTag = function() {
-    return "{{#each}} "+Meteor.release;
-  };
+  Template.hello.helpers({
+    eachTag: function() {
+      return "{{#each}} "+Meteor.release;
+    },
+    code: function () {
+        var r = "<template name='hello'>\n";
+        r+=" {{> dataEach}}\n";
+        r+="</template>\n";
+        r+="\n";
+        r+="<template name='dataEach'>\n";
+        r+="  <ul class='dataEach'>\n";
+        r+="    {{#each data}}\n";
+        r+="      {{> dataTemplate}}\n";
+        r+="    {{/each}}\n";
+        r+="  </ul>\n";
+        r+="</template>\n";
+        r+="\n";
+        r+="<template name='dataTemplate'>\n";
+        r+="  <li class='dataTemplate'>\n";
+        r+="   {{title}} <sup><a href='#' id='{{_id}}' class='delete' title='delete'>x</a></sup>\n";
+        r+="  </li>\n";
+        r+="</template>\n";
 
-  Template.hello.code = function () {
-    var r = "<template name='hello'>\n";
-    r+=" {{> dataEach}}\n";
-    r+="</template>\n";
-    r+="\n";
-    r+="<template name='dataEach'>\n";
-    r+="  <ul class='dataEach'>\n";
-    r+="    {{#each data}}\n";
-    r+="      {{> dataTemplate}}\n";
-    r+="    {{/each}}\n";
-    r+="  </ul>\n";
-    r+="</template>\n";
-    r+="\n";
-    r+="<template name='dataTemplate'>\n";
-    r+="  <li class='dataTemplate'>\n";
-    r+="   {{title}} <sup><a href='#' id='{{_id}}' class='delete' title='delete'>x</a></sup>\n";
-    r+="  </li>\n";
-    r+="</template>\n";
-
-    r+="\n\nTemplate.dataEach.data = function(){ return DataItems.find().fetch() }";
-    return r;
-  };
-
-  Template.hello.codeRendered = function() {
-    r = "Template.dataTemplate.rendered = function() {\n";
-    r+= " console.log('dataTemplate rendered with number of a.delete = <b>'+$(this.find('a.delete'))</b>.size());\n";
-    r+= "};\n";
-    return r;
-  };
+        r+="\n\nTemplate.dataEach.data = function(){ return DataItems.find().fetch() }";
+        return r;
+    },
+    codeRendered: function() {
+        r = "Template.dataTemplate.rendered = function() {\n";
+        r+= " console.log('dataTemplate rendered with number of a.delete = <b>'+$(this.find('a.delete'))</b>.size());\n";
+        r+= "};\n";
+        return r;
+    },
+  });
 
   Template.hello.events({
     'click input.add': function (e,t) {
@@ -65,9 +65,11 @@ if (Meteor.isClient) {
     console.log(this);
   };
 
-  Template.dataEach.data = function() {
-    return DataItems.find().fetch();
-  };
+  Template.dataEach.helpers({
+     data: function() {
+      return DataItems.find().fetch();
+    }
+  });
 
   Template.dataTemplate.rendered = function() {
     // console.log('dataTemplate rendered with number of a.delete = '+$('a.delete').size());
@@ -79,7 +81,7 @@ if (Meteor.isClient) {
     'click a.delete': function(e, t) {
       e.preventDefault();
       console.log('deleting '+e.target.id);
-      DataItems.remove({_id: e.target.id});      
+      DataItems.remove({_id: e.target.id});
     }
   });
 }
